@@ -39,13 +39,14 @@ sub check {
 sub run {
     my ($self, %params) = @_;
 
-    my $server  = $params{server};
+    my $server  = $params{server} or croak("server is required");
+    my $port    = $params{port}    // 25;
     my $timeout = $params{timeout} // 5;
 
     $server = $server->( %params ) if ref $server eq 'CODE';
 
     local $@;
-    my $smtp = Net::SMTP->new( $server, Timeout => $timeout );
+    my $smtp = Net::SMTP->new( $server, Timeout => $timeout, Port => $port );
 
     unless ( $smtp ) {
         return {
@@ -87,7 +88,12 @@ Can be passed either to C<new> or C<check>.
 
 =head2 server
 
-Either a string of the hostname or a coderef that returns a hostname string.
+B<required> Either a string of the hostname or a coderef that returns a hostname
+string.
+
+=head2 port
+
+The port to connect to. Defaults to 25.
 
 =head2 timeout
 
