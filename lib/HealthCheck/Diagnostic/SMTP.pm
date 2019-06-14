@@ -39,14 +39,8 @@ sub check {
 sub run {
     my ($self, %params) = @_;
 
-    my $server  = $params{server} or croak("server is required");
-    my $port    = $params{port}    // 25;
-    my $timeout = $params{timeout} // 5;
-
-    $server = $server->( %params ) if ref $server eq 'CODE';
-
     local $@;
-    my $smtp = Net::SMTP->new( $server, Timeout => $timeout, Port => $port );
+    my $smtp = $self->smtp_connect( %params );
 
     unless ( $smtp ) {
         return {
@@ -64,6 +58,18 @@ sub run {
     };
 }
 
+sub smtp_connect {
+    my ( $self, %params ) = @_;
+
+    my $host    = $params{ host } or die "host is required\n";
+    my $port    = $params{ port }    // 25;
+    my $timeout = $params{ timeout } // 5;
+
+    $host = $host->( %params ) if ref $host eq 'CODE';
+
+    return Net::SMTP->new( $host, Timeout => $timeout, Port => $port );
+}
+
 1;
 __END__
 
@@ -73,7 +79,7 @@ Check that you can talk to the server.
 
     my $health_check = HealthCheck->new( checks => [
         HealthCheck::Diagnostic::SMTP->new(
-            server  => 'smtp.gmail.com',
+            host    => 'smtp.gmail.com',
             timeout => 5,
     ]);
 
@@ -86,7 +92,7 @@ the connection was successful, or "CRITICAL" otherwise.
 
 Can be passed either to C<new> or C<check>.
 
-=head2 server
+=head2 host
 
 B<required> Either a string of the hostname or a coderef that returns a hostname
 string.
