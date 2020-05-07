@@ -1,14 +1,48 @@
 # NAME
 
-HealthCheck::Diagnostic::SMTP - Your Abstract Here
+HealthCheck::Diagnostic::SMTP - Verify connectivity to an SMTP mail server
 
 # VERSION
 
-version 0.0.1
+version v0.0.2
 
 # SYNOPSIS
 
+Check that you can talk to the server.
+
+    my $health_check = HealthCheck->new( checks => [
+        HealthCheck::Diagnostic::SMTP->new(
+            host    => 'smtp.gmail.com',
+            timeout => 5,
+    ]);
+
 # DESCRIPTION
+
+Determines if the SMTP mail server is available. Sets the `status` to "OK" if
+the connection was successful, or "CRITICAL" otherwise.
+
+# ATTRIBUTES
+
+Can be passed either to `new` or `check`.
+
+## host
+
+**required** Either a string of the hostname or a coderef that returns a hostname
+string.
+
+## port
+
+The port to connect to. Defaults to 25.
+
+## timeout
+
+The number of seconds to timeout after trying to establish a connection.
+Defaults to 5.
+
+# DEPENDENCIES
+
+[HealthCheck::Diagnostic](https://metacpan.org/pod/HealthCheck%3A%3ADiagnostic)
+[Net::SMTP](https://metacpan.org/pod/Net%3A%3ASMTP)
 
 # AUTHOR
 
@@ -16,10 +50,8 @@ Grant Street Group <developers@grantstreet.com>
 
 # COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2019 by Grant Street Group.  No
-license is granted to other entities.
+This software is Copyright (c) 2019 - 2020 by Grant Street Group.
 
-# CONTRIBUTORS
+This is free software, licensed under:
 
-- Authors:
-- (2) Mitch McCracken <mmccrack@grantstreet.com>
+    The Artistic License 2.0 (GPL Compatible)
