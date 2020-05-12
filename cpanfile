@@ -1,10 +1,14 @@
-use GSG::Gitc::CPANfile $_environment;
-
-# Add your requirements here
+requires 'strict';
+requires 'warnings';
+requires 'parent';
 
 requires 'HealthCheck::Diagnostic';
 requires 'Net::SMTP';
 
+on test => sub {
+    requires 'Test::More';
+};
+
 on develop => sub {
-    requires 'Dist::Zilla::PluginBundle::Author::GSG::Internal';
+    requires 'Dist::Zilla::PluginBundle::Author::GSG';
 };
