@@ -48,7 +48,7 @@ sub run {
     unless ( $smtp ) {
         return {
             status => 'CRITICAL',
-            info   => $@,
+            info   => "$@",
         };
     }
 
