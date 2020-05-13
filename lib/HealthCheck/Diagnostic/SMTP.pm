@@ -7,6 +7,9 @@ use parent 'HealthCheck::Diagnostic';
 
 use Net::SMTP;
 
+# https://metacpan.org/pod/distribution/perl/pod/perl5140delta.pod#Exception-Handling
+use constant UNSTABLE_DOLLARAT => $] lt '5.013002';
+
 # ABSTRACT: Verify connectivity to an SMTP mail server
 # VERSION
 
@@ -39,7 +42,7 @@ sub check {
 sub run {
     my ($self, %params) = @_;
 
-    local $@;
+    local $@ unless UNSTABLE_DOLLARAT;
     my $smtp = $self->smtp_connect( %params );
 
     unless ( $smtp ) {
