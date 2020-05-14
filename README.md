@@ -4,7 +4,7 @@ HealthCheck::Diagnostic::SMTP - Verify connectivity to an SMTP mail server
 
 # VERSION
 
-version v0.0.2
+version v0.0.4
 
 # SYNOPSIS
 
